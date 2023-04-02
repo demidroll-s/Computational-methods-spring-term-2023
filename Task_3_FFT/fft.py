@@ -41,7 +41,6 @@ def inverse_fft(fft_signal : np.ndarray):
     signal = [np.conjugate(val) / len(fft_signal) for val in signal]
     return np.array(signal)
 
-"""
 def padding_2d(signal : np.ndarray):
     '''
     Scales 2D array for dimensions 
@@ -62,21 +61,6 @@ def fft_2d(signal : np.ndarray):
     fft_xaxis = fft(template)
     fft_yaxis = fft(np.transpose(fft_xaxis))
     return np.transpose(fft_yaxis), n_x, n_y
-"""
-
-def pad2(x):
-   m, n = np.shape(x)
-   M, N = 2 ** int(ceil(log(m, 2))), 2 ** int(ceil(log(n, 2)))
-   F = np.zeros((M,N), dtype = x.dtype)
-   F[0:m, 0:n] = x
-   return F, m, n
-
-def fft_2d(f):
-   '''FFT of 2-d signals/images with padding
-   usage X, m, n = fft2(x), where m and n are dimensions of original signal'''
-
-   f, m, n = pad2(f)
-   return np.transpose(fft(np.transpose(fft(f)))), m, n
 
 def inverse_fft_2d(fft_signal : np.ndarray, n_x : int, n_y : int):
     """
@@ -91,15 +75,15 @@ def fft_shift(fft_signal : np.ndarray):
    Shifts the centre of FFT of 2D signals
    """
    n_fft_x, n_fft_y = fft_signal.shape
-   R1, R2 = fft_signal[0 : n_fft_x // 2, 0 : n_fft_y // 2], \
+   x1, x2 = fft_signal[0 : n_fft_x // 2, 0 : n_fft_y // 2], \
             fft_signal[n_fft_x // 2 : n_fft_x, 0 : n_fft_y // 2]
-   R3, R4 = fft_signal[0 : n_fft_x // 2, n_fft_y // 2 : n_fft_y], \
+   x3, x4 = fft_signal[0 : n_fft_x // 2, n_fft_y // 2 : n_fft_y], \
             fft_signal[n_fft_x // 2 : n_fft_x, n_fft_y // 2 : n_fft_y]
    shifted_fft = np.zeros(shape = fft_signal.shape, dtype = fft_signal.dtype)
    shifted_fft[n_fft_x // 2 : n_fft_x, n_fft_y // 2 : n_fft_y], \
-    shifted_fft[0 : n_fft_x // 2, 0 : n_fft_y // 2] = R1, R4
+    shifted_fft[0 : n_fft_x // 2, 0 : n_fft_y // 2] = x1, x4
    shifted_fft[n_fft_x // 2 : n_fft_x, 0 : n_fft_y // 2], \
-    shifted_fft[0 : n_fft_x // 2, n_fft_y // 2 : n_fft_y] = R3, R2
+    shifted_fft[0 : n_fft_x // 2, n_fft_y // 2 : n_fft_y] = x3, x2
    
    return shifted_fft
 

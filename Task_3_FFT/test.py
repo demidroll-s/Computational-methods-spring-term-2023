@@ -29,13 +29,12 @@ fft_signal2, n_x, n_y = fft.fft_2d(signal)
 
 for i in range(len(fft_signal1)):
     for j in range(len(fft_signal1[i])):
-        print(abs(fft_signal1[i][j]))
+        assert abs(fft_signal1[i][j] - fft_signal2[i][j]) < eps, 'Test 3 - Failed'
 print('Tets 3 - OK!')
 
 #Visualize 2D fast fourier transform
 path_data = 'data/'
-images_names = ['grating-1.png'] 
-['grating-2.png', 'grating-3.png', 'grating-4.png', 'stinkbug.png']
+images_names = ['grating-1.png', 'grating-2.png', 'grating-3.png', 'stinkbug.png']
 n_images = len(images_names)
 
 for i in range(len(images_names)):
@@ -44,7 +43,8 @@ for i in range(len(images_names)):
     image_signal = ic.convert_image_to_hex_array(image_filename=path_image)
     axes[0].imshow(image_signal, cmap='gray')
     fft_image_signal, m, n = fft.fft_2d(image_signal)
-    #fft_image_signal = fft.fft_shift(fft_image_signal)
-    print(fft_image_signal)
+    fft_image_signal = fft.fft_shift(fft_image_signal)
     axes[1].imshow(abs(fft_image_signal), cmap='gray')
+    axes[1].set_xlim([492, 532])
+    axes[1].set_ylim([532, 492])
     plt.savefig('fft-results/fft-results-' + images_names[i], dpi=300)
