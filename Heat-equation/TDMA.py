@@ -1,3 +1,5 @@
+import numpy as np
+
 def tridiag(a, b, c):
     """
     Строит матрицу по трем данным диагоналям
