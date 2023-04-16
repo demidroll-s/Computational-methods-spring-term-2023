@@ -10,11 +10,17 @@ public:
     BlackScholesModel(double drift, double stock_price, double volatility, 
         double risk_free_rate, double date);
 
-    std::vector<double> GeneratePricePath(double to_date, int n_steps, double drift) const;
+    double GetRiskFreeRate() const;
+    double GetDate() const;
+ 
+    std::vector<double> GeneratePricePath(double to_date, size_t n_steps) const;
+    std::vector<double> GenerateRiskNeutralPricePath(double to_date, size_t n_steps) const;
 private:
     double drift_;
     double stock_price_;
     double volatility_;
-    double risk_free_date_;
-    double date_;  
+    double risk_free_rate_;
+    double date_;
+
+    std::vector<double> GeneratePricePath(double to_date, size_t n_steps, double drift) const;
 };
